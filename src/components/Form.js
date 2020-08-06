@@ -26,6 +26,7 @@ const Form = () => {
 
   const [listcript, setListcript] = useState([]);
 
+  const [error, setError] = useState(false);
 
   const COINS = [ 
     {code: 'USD', name: 'USD Dolar'},
@@ -48,8 +49,20 @@ const Form = () => {
     consultAPI();
   }, [])
 
+  const quoteCurrency = e => {
+    e.preventDefault();
+
+    if(coin === '' || crypto === ''){
+      setError(true);
+      return;
+    }
+
+    setError(false);
+  }
+
   return (
-    <form>
+    <form onSubmit={quoteCurrency}>
+      {error ?  'Hay un error' : null}
       <SelectCoin />
       <SelectCrypto />
       <Button type="submit" value="Calcular" />
