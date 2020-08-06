@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Form from "./components/Form";
+import Quote from "./components/Quote";
 import styled from "styled-components";
 import img from "./cryptomonedas.png";
+import axios from 'axios';
 
 const Container = styled.div`
   max-width: 900px;
@@ -37,6 +39,28 @@ const Heading = styled.h1`
 `;
 
 function App() {
+
+  const [curr, setCurr] = useState('');
+  const [cryptocurr, setCryptocurr] = useState('');
+  const [result, setResult] = useState({});
+
+  useEffect(() => {
+      const quoteCrypt = async () => {
+        if(curr === '') return;
+    
+    //consult api to get quote
+
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptocurr}&tsyms=${curr}`;
+
+    const result = await axios.get(url);
+
+    setResult(result.data.DISPLAY[cryptocurr][curr]);
+    }
+
+    quoteCrypt();
+
+  }, [curr, cryptocurr]);
+
   return (
     <div className="App">
       <Container>
@@ -45,7 +69,13 @@ function App() {
         </div>
         <div>
           <Heading>Cotiza Criptomonedas al instante</Heading>
-          <Form />
+          <Form 
+            setCurr={setCurr}
+            setCryptocurr={setCryptocurr}
+          />
+          <Quote
+            result={result}
+          />
         </div>
       </Container>
     </div>

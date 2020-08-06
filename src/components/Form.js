@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import Error from './Error';
 import useCoin from "../hooks/useCoin";
 import useCrypto from "../hooks/useCrypto";
 import axios from 'axios';
@@ -22,7 +23,7 @@ const Button = styled.input`
   }
 `;
 
-const Form = () => {
+const Form = ({setCurr, setCryptocurr}) => {
 
   const [listcript, setListcript] = useState([]);
 
@@ -58,11 +59,13 @@ const Form = () => {
     }
 
     setError(false);
+    setCurr(coin);
+    setCryptocurr(crypto);
   }
 
   return (
     <form onSubmit={quoteCurrency}>
-      {error ?  'Hay un error' : null}
+      {error ?  <Error msg='Todos los campos son obligatorios' /> : null}
       <SelectCoin />
       <SelectCrypto />
       <Button type="submit" value="Calcular" />
