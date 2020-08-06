@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Form from "./components/Form";
 import Quote from "./components/Quote";
+import Spinner from "./components/Spinner";
 import styled from "styled-components";
 import img from "./cryptomonedas.png";
 import axios from 'axios';
@@ -43,23 +44,33 @@ function App() {
   const [curr, setCurr] = useState('');
   const [cryptocurr, setCryptocurr] = useState('');
   const [result, setResult] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
       const quoteCrypt = async () => {
         if(curr === '') return;
     
-    //consult api to get quote
+      //consult api to get quote
 
-    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptocurr}&tsyms=${curr}`;
+      const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptocurr}&tsyms=${curr}`;
 
-    const result = await axios.get(url);
+      const result = await axios.get(url);
 
-    setResult(result.data.DISPLAY[cryptocurr][curr]);
+      setLoading(true);
+
+      setTimeout(() => {
+        setLoading(false);
+        setResult(result.data.DISPLAY[cryptocurr][curr]);
+      }, 3000)
+
+      
     }
 
     quoteCrypt();
 
   }, [curr, cryptocurr]);
+
+  const component = (loading) ? <Spinner /> :  <Quote result={result} />;
 
   return (
     <div className="App">
@@ -73,9 +84,9 @@ function App() {
             setCurr={setCurr}
             setCryptocurr={setCryptocurr}
           />
-          <Quote
-            result={result}
-          />
+
+          {component}
+         
         </div>
       </Container>
     </div>
