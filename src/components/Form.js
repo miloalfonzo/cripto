@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import useCoin from "../hooks/useCoin";
+import useCrypto from "../hooks/useCrypto";
 
 const Button = styled.input`
   margin-top: 20px;
@@ -21,11 +22,21 @@ const Button = styled.input`
 `;
 
 const Form = () => {
-  const [coin, Select] = useCoin("");
+  const COINS = [ 
+    {code: 'USD', name: 'USD Dolar'},
+    {code: 'ARG', name: 'Peso Argentino'},
+    {code: 'MXN', name: 'Peso Mexicano'},
+    {code: 'EUR', name: 'Euro'}
+  ]
+
+  const [coin, SelectCoin] = useCoin('Elige tu moneda', '', COINS );
+  
+  const [crypto, SelectCrypto] = useCrypto('Elige tu Criptomoneda', '');
 
   return (
     <form>
-      <Select />
+      <SelectCoin />
+      <SelectCrypto />
       <Button type="submit" value="Calcular" />
     </form>
   );
