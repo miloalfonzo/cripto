@@ -1,4 +1,5 @@
 import React from "react";
+import Form from "./components/Form";
 import styled from "styled-components";
 import img from "./cryptomonedas.png";
 
@@ -44,6 +45,7 @@ function App() {
         </div>
         <div>
           <Heading>Cotiza Criptomonedas al instante</Heading>
+          <Form />
         </div>
       </Container>
     </div>
